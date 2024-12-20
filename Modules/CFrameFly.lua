@@ -91,6 +91,7 @@ end
 
 local function HandleInput(input, gameProcessedEvent)
     if input.UserInputType == Enum.UserInputType.Keyboard then
+        -- Check if CFrameFly.Settings.FlyKeybind is valid before using it
         if CFrameFly.Settings.FlyKeybind and input.KeyCode == Enum.KeyCode[CFrameFly.Settings.FlyKeybind] and not gameProcessedEvent then
             print("Fly keybind pressed. Enabled:", CFrameFly.Settings.Enabled)
             if CFrameFly.Settings.Enabled then
@@ -107,21 +108,19 @@ end
 local function OnRenderStep()
     print("OnRenderStep running")
     print("IsFlying:", IsFlying, "Character:", Character, "Humanoid:", Humanoid, "HumanoidRootPart:", HumanoidRootPart)
-    if not IsFlying or not Character or not HumanoidRootPart then
-        print("OnRenderStep: Early return due to IsFlying, Character, or HumanoidRootPart being nil")
-        return
-    end
+    if not IsFlying or not Character or not HumanoidRootPart then return end
 
     local camera = workspace.CurrentCamera
-    print("Camera CFrame:", camera.CFrame) -- Add this line
     local moveVector = Vector3.new(0, 0, 0)
 
-    if CFrameFly.Settings.UpKeybind and UserInputService:IsKeyDown(Enum.KeyCode[CFrameFly.Settings.UpKeybind]) then
+    print("CFrameFly.Settings.UpKeybind:", CFrameFly.Settings.UpKeybind)
+    if UserInputService:IsKeyDown(Enum.KeyCode[CFrameFly.Settings.UpKeybind]) then
         print("Up key pressed")
         moveVector = moveVector + camera.CFrame.UpVector
     end
 
-    if CFrameFly.Settings.DownKeybind and UserInputService:IsKeyDown(Enum.KeyCode[CFrameFly.Settings.DownKeybind]) then
+    print("CFrameFly.Settings.DownKeybind:", CFrameFly.Settings.DownKeybind)
+    if UserInputService:IsKeyDown(Enum.KeyCode[CFrameFly.Settings.DownKeybind]) then
         print("Down key pressed")
         moveVector = moveVector - camera.CFrame.UpVector
     end
@@ -143,9 +142,16 @@ local function OnRenderStep()
         moveVector = moveVector + camera.CFrame.RightVector
     end
 
-    moveVector = moveVector.Unit * CFrameFly.Settings.Speed
+    -- Check if moveVector is a zero vector before normalizing
+    if moveVector.Magnitude > 0 then
+        moveVector = moveVector.Unit * CFrameFly.Settings.Speed
+    else
+        -- Optionally, set moveVector to a small value in a desired direction if it's zero
+        print("moveVector is zero")
+        -- moveVector = camera.CFrame.LookVector * 0.01 -- Example: move slightly forward
+    end
+
     print("moveVector:", moveVector)
-    print("moveVector components:", moveVector.X, moveVector.Y, moveVector.Z) -- Add this line
     HumanoidRootPart.CFrame = HumanoidRootPart.CFrame + moveVector
 end
 
@@ -162,7 +168,6 @@ local function Load()
     print("CFrameFly.Settings.FlyKeybind:", CFrameFly.Settings.FlyKeybind)
     print("CFrameFly.Settings.UpKeybind:", CFrameFly.Settings.UpKeybind)
     print("CFrameFly.Settings.DownKeybind:", CFrameFly.Settings.DownKeybind)
-    print("CFrameFly.Settings.Speed:", CFrameFly.Settings.Speed) -- Check initial speed
 
     InputConnection = UserInputService.InputBegan:Connect(HandleInput)
     RenderStepConnection = RunService.RenderStepped:Connect(OnRenderStep)
