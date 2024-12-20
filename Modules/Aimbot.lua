@@ -4,7 +4,7 @@ local pcall, getgenv, next, setmetatable, Vector2new, CFramenew, Color3fromRGB, 
 
 --// Launching checks
 
-if not getgenv().6Xryo or getgenv().6Xryo.Aimbot then return end
+if not getgenv().Xryo or getgenv().Xryo.Aimbot then return end
 
 --// Services
 
@@ -21,7 +21,7 @@ local RequiredDistance, Typing, Running, ServiceConnections, Animation, Original
 
 --// Environment
 
-getgenv().6Xryo.Aimbot = {
+getgenv().Xryo.Aimbot = {
 	Settings = {
 		Enabled = false,
 		TeamCheck = false,
@@ -50,7 +50,7 @@ getgenv().6Xryo.Aimbot = {
 	FOVCircle = Drawingnew("Circle")
 }
 
-local Environment = getgenv().6Xryo.Aimbot
+local Environment = getgenv().Xryo.Aimbot
 
 --// Core Functions
 
@@ -185,8 +185,8 @@ function Environment.Functions:Exit()
 
 	Environment.FOVCircle:Remove()
 
-	getgenv().6Xryo.Aimbot.Functions = nil
-	getgenv().6Xryo.Aimbot = nil
+	getgenv().Xryo.Aimbot.Functions = nil
+	getgenv().Xryo.Aimbot = nil
 
 	Load = nil; ConvertVector = nil; CancelLock = nil; GetClosestPlayer = nil;
 end
