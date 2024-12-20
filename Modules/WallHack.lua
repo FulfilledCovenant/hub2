@@ -5,7 +5,7 @@ local WorldToViewportPoint, Vector2new, Vector3new, Vector3zero, CFramenew, Draw
 
 --// Launching checks
 
-if not getgenv().6Xryo or getgenv().6Xryo.WallHack then return end
+if not getgenv().Xryo or getgenv().Xryo.WallHack then return end
 
 --// Services
 
@@ -21,7 +21,7 @@ local ServiceConnections = {}
 
 --// Environment
 
-getgenv().6Xryo.WallHack = {
+getgenv().Xryo.WallHack = {
 	Settings = {
 		Enabled = false,
 		TeamCheck = false,
@@ -120,7 +120,7 @@ getgenv().6Xryo.WallHack = {
 	WrappedPlayers = {}
 }
 
-local Environment = getgenv().6Xryo.WallHack
+local Environment = getgenv().Xryo.WallHack
 
 --// Core Functions
 
@@ -858,8 +858,8 @@ function Environment.Functions:Exit()
 		end
 	end
 
-	getgenv().6Xryo.WallHack.Functions = nil
-	getgenv().6Xryo.WallHack = nil
+	getgenv().Xryo.WallHack.Functions = nil
+	getgenv().Xryo.WallHack = nil
 
 	Load = nil; GetPlayerTable = nil; AssignRigType = nil; InitChecks = nil; UpdateCham = nil; Visuals = nil; Wrap = nil; UnWrap = nil
 end
