@@ -35,7 +35,34 @@ local ClickTP = getgenv().Xryo.ClickTP
 
 --// Core Functions
 
--- ... (Other core functions: UpdateCharacterRefs, TeleportTo, OnMouseClick) ...
+local function UpdateCharacterRefs()
+    Character = LocalPlayer.Character
+    if Character then
+        HumanoidRootPart = Character:FindFirstChild("HumanoidRootPart")
+		Mouse = LocalPlayer:GetMouse()
+    end
+end
+
+local function TeleportTo(position)
+    if Character and HumanoidRootPart then
+        -- Teleport the character
+        HumanoidRootPart.CFrame = CFrame.new(position)
+    end
+end
+
+local function OnMouseClick()
+    if IsClickTPEnabled and Mouse then
+        local target = Mouse.Target
+        if target then
+            local position = Mouse.Hit.Position
+            TeleportTo(position)
+        end
+    end
+end
+
+local function OnRenderStep()
+	-- Not used in this module currently
+end
 
 local function OnInputBegan(input, gameProcessedEvent)
     if input.UserInputType == Enum.UserInputType.Keyboard then
@@ -85,7 +112,19 @@ end
 
 --// Functions
 
--- ... (Other functions: Exit, Restart) ...
+function ClickTP.Functions:Exit()
+	if InputConnection then InputConnection:Disconnect() end
+	if RenderStepConnection then RenderStepConnection:Disconnect() end
+	if CharacterAddedConnection then CharacterAddedConnection:Disconnect() end
+
+	getgenv().Xryo.ClickTP.Functions = nil
+	getgenv().Xryo.ClickTP = nil
+end
+
+function ClickTP.Functions:Restart()
+	ClickTP.Functions:Exit()
+	Load()
+end
 
 function ClickTP.Functions:Stop()
 	Running = false
