@@ -32,14 +32,17 @@ local ClickTeleport = getgenv().Xryo.ClickTeleport
 --// Core Functions
 
 local function Teleport(Position)
+    print("Teleport called with Position:", Position)
     if not LocalPlayer or not LocalPlayer.Character then return end
 
     local Character = LocalPlayer.Character
     local HumanoidRootPart = Character:FindFirstChild("HumanoidRootPart")
 
     if HumanoidRootPart then
+        print("HumanoidRootPart found:", HumanoidRootPart)
         -- Method 1: CFrame with Offset (Less likely to be detected)
         local Offset = Vector3.new(0, 3, 0) -- Teleport slightly above the target position
+        print("Teleporting to CFrame:", CFrame.new(Position + Offset))
         HumanoidRootPart.CFrame = CFrame.new(Position + Offset)
 
         -- Method 2: CFraming Body Parts Individually (More complex, potentially less detectable)
@@ -48,17 +51,26 @@ local function Teleport(Position)
         --         Part.CFrame = CFrame.new(Position + Offset + (Part.Position - HumanoidRootPart.Position))
         --     end
         -- end
+    else
+        print("HumanoidRootPart not found!")
     end
 end
 
 local function OnUpdate()
     if not Enabled then return end
 
+    print("Click Teleport Enabled:", ClickTeleport.Settings.Enabled)
+    print("Teleport Keybind:", ClickTeleport.Settings.TeleportKeybind)
+
     if UserInputService:IsKeyDown(Enum.KeyCode[ClickTeleport.Settings.TeleportKeybind]) then
-        if Mouse.Target and Mouse.Target ~= workspace.Terrain then -- Check if we are clicking a part, not the sky or terrain.
-          local MouseHit = Mouse.Hit 
-          local pos = MouseHit.p
-          Teleport(pos)
+        print("Teleport key pressed")
+        if Mouse.Target and Mouse.Target ~= workspace.Terrain then
+            local MouseHit = Mouse.Hit
+            local pos = MouseHit.p
+            print("Mouse Target:", Mouse.Target)
+            print("Mouse Hit:", MouseHit)
+            print("Teleporting to:", pos)
+            Teleport(pos)
         end
     end
 end
@@ -69,6 +81,7 @@ local UpdateConnection
 
 local function Load()
     UpdateConnection = RunService.Stepped:Connect(OnUpdate)
+    print("UpdateConnection:", UpdateConnection)
 end
 
 --// Functions
