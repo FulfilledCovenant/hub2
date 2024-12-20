@@ -4,13 +4,13 @@ local loadstring, getgenv, setclipboard, tablefind, UserInputService = loadstrin
 
 --// Loaded check
 
-if 6Xryo or 6XryoV2Loaded then
+if Xryo or XryoV2Loaded then
     return
 end
 
 --// Environment
 
-getgenv().6Xryo = {}
+getgenv().Xryo = {}
 
 --// Load Modules
 
@@ -29,27 +29,27 @@ print("CFrameFly Loaded")
 --// Variables
 
 local Library = loadstring(game:GetObjects("rbxassetid://7657867786")[1].Source)() -- Pepsi's UI Library
-local Aimbot, WallHack = getgenv().6Xryo.Aimbot, getgenv().6Xryo.WallHack
+local Aimbot, WallHack = getgenv().Xryo.Aimbot, getgenv().Xryo.WallHack
 local Parts, Fonts, TracersType = {"Head", "HumanoidRootPart", "Torso", "Left Arm", "Right Arm", "Left Leg", "Right Leg", "LeftHand", "RightHand", "LeftLowerArm", "RightLowerArm", "LeftUpperArm", "RightUpperArm", "LeftFoot", "LeftLowerLeg", "UpperTorso", "LeftUpperLeg", "RightFoot", "RightLowerLeg", "LowerTorso", "RightUpperLeg"}, {"UI", "System", "Plex", "Monospace"}, {"Bottom", "Center", "Mouse"}
-local CFrameFly = getgenv().6Xryo.CFrameFly -- Add reference to CFrame Fly module
+local CFrameFly = getgenv().Xryo.CFrameFly -- Add reference to CFrame Fly module
 
 --// Frame
 
 Library.UnloadCallback = function()
 	Aimbot.Functions:Exit()
 	WallHack.Functions:Exit()
-	getgenv().6Xryo = nil
+	getgenv().Xryo = nil
 end
 
 local MainFrame = Library:CreateWindow({
-	Name = "6Xryo",
+	Name = "Xryo",
 	Themeable = {
 		Image = "7059346386",
-		Info = "Made by 6Xryo Team",
+		Info = "Made by Xryo Team",
 		Credit = false
 	},
 	Background = "",
-	Theme = [[{"__Designer.Colors.topGradient":"3F0C64","__Designer.Colors.section":"C259FB","__Designer.Colors.hoveredOptionBottom":"4819B4","__Designer.Background.ImageAssetID":"rbxassetid://4427304036","__Designer.Colors.selectedOption":"4E149C","__Designer.Colors.unselectedOption":"482271","__Designer.Files.WorkspaceFile":"6Xryo","__Designer.Colors.unhoveredOptionTop":"310269","__Designer.Colors.outerBorder":"391D57","__Designer.Background.ImageColor":"69009C","__Designer.Colors.tabText":"B9B9B9","__Designer.Colors.elementBorder":"160B24","__Designer.Background.ImageTransparency":100,"__Designer.Colors.background":"1E1237","__Designer.Colors.innerBorder":"531E79","__Designer.Colors.bottomGradient":"361A60","__Designer.Colors.sectionBackground":"21002C","__Designer.Colors.hoveredOptionTop":"6B10F9","__Designer.Colors.otherElementText":"7B44A8","__Designer.Colors.main":"AB26FF","__Designer.Colors.elementText":"9F7DB5","__Designer.Colors.unhoveredOptionBottom":"3E0088","__Designer.Background.UseBackgroundImage":false}]]
+	Theme = [[{"__Designer.Colors.topGradient":"3F0C64","__Designer.Colors.section":"C259FB","__Designer.Colors.hoveredOptionBottom":"4819B4","__Designer.Background.ImageAssetID":"rbxassetid://4427304036","__Designer.Colors.selectedOption":"4E149C","__Designer.Colors.unselectedOption":"482271","__Designer.Files.WorkspaceFile":"Xryo","__Designer.Colors.unhoveredOptionTop":"310269","__Designer.Colors.outerBorder":"391D57","__Designer.Background.ImageColor":"69009C","__Designer.Colors.tabText":"B9B9B9","__Designer.Colors.elementBorder":"160B24","__Designer.Background.ImageTransparency":100,"__Designer.Colors.background":"1E1237","__Designer.Colors.innerBorder":"531E79","__Designer.Colors.bottomGradient":"361A60","__Designer.Colors.sectionBackground":"21002C","__Designer.Colors.hoveredOptionTop":"6B10F9","__Designer.Colors.otherElementText":"7B44A8","__Designer.Colors.main":"AB26FF","__Designer.Colors.elementText":"9F7DB5","__Designer.Colors.unhoveredOptionBottom":"3E0088","__Designer.Background.UseBackgroundImage":false}]]
 })
 
 --// Tabs
@@ -978,7 +978,7 @@ do
 	end
 
 	game.StarterGui:SetCore("SendNotification", {
-		Title = "🎆  Xryo V2  🎆",
+		Title = "Xryo V2",
 		Text = "Would you like to use the new V2 script?",
 		Button1 = "Yes",
 		Button2 = "No",
