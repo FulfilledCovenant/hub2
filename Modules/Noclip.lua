@@ -55,8 +55,16 @@ local function SetNoclip(enabled, noclipType)
 					if enabled then
 						part:SetNetworkOwner(LocalPlayer) -- Attempt to take network ownership for bypassing
 					end
-					if not part:GetCanCollideWithPart(part) then -- Check for existing collision group
-						part.CollisionGroup = collisionGroupName
+					-- Check for existing collision group using GetCollisionGroupId instead of GetCanCollideWithPart
+					if part.CollisionGroupId == 0 then -- 0 is the default collision group ID
+						local success, collisionGroupId = pcall(function()
+							return game:GetService("PhysicsService"):GetCollisionGroupId(collisionGroupName)
+						end)
+						if success and collisionGroupId then
+							part.CollisionGroupId = collisionGroupId
+						else
+							warn("Failed to get or create collision group ID for:", collisionGroupName)
+						end
 					end
 				end
 			end
@@ -144,16 +152,29 @@ local function Load()
 	-- Create a new collision group for bypass noclip if it doesn't exist
 	local collisionGroupName = "NoCollision"
 	local collisionGroupExists = false
-	for _, group in pairs(game:GetService("PhysicsService"):GetCollisionGroups()) do
-		if group.name == collisionGroupName then
+
+	-- Use GetCollisionGroupNames to check for existing collision group names
+	local collisionGroupNames = game:GetService("PhysicsService"):GetCollisionGroupNames()
+	for _, name in pairs(collisionGroupNames) do
+		if name == collisionGroupName then
 			collisionGroupExists = true
 			break
 		end
 	end
+
 	if not collisionGroupExists then
-		game:GetService("PhysicsService"):RegisterCollisionGroup(collisionGroupName)
+		local success, err = pcall(function()
+			game:GetService("PhysicsService"):RegisterCollisionGroup(collisionGroupName)
+		end)
+		if not success then
+			warn("Failed to register collision group:", collisionGroupName, "Error:", err)
+		else
+			-- Only set collidability if registration is successful
+			game:GetService("PhysicsService"):CollisionGroupSetCollidable(collisionGroupName, "Default", false)
+		end
+	else
+		-- Assume collision group is already set up correctly if it exists
 	end
-	game:GetService("PhysicsService"):CollisionGroupSetCollidable(collisionGroupName, "Default", false)
 end
 
 --// Functions
