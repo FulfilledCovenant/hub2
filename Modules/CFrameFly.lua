@@ -76,7 +76,7 @@ end
 
 local function HandleInput(input, gameProcessedEvent)
     if input.UserInputType == Enum.UserInputType.Keyboard then
-        -- Check if CFrameFly.Settings.FlyKeybind is valid before using it
+        -- Use the stored keybind values from Settings
         if CFrameFly.Settings.FlyKeybind and input.KeyCode == Enum.KeyCode[CFrameFly.Settings.FlyKeybind] and not gameProcessedEvent then
             if CFrameFly.Settings.Enabled then
                 if IsFlying then
@@ -95,6 +95,7 @@ local function OnRenderStep()
     local camera = workspace.CurrentCamera
     local moveVector = Vector3.new(0, 0, 0)
 
+    -- Use the stored keybind values from Settings
     if UserInputService:IsKeyDown(Enum.KeyCode[CFrameFly.Settings.UpKeybind]) then
         moveVector = moveVector + camera.CFrame.UpVector
     end
@@ -114,7 +115,6 @@ local function OnRenderStep()
         moveVector = moveVector + camera.CFrame.RightVector
     end
 
-    -- Check if moveVector is a zero vector before normalizing
     if moveVector.Magnitude > 0 then
         moveVector = moveVector.Unit * CFrameFly.Settings.Speed
     end
@@ -129,29 +129,11 @@ local RenderStepConnection
 local CharacterAddedConnection
 
 local function Load()
-    print("CFrameFly Load called")
-
-    -- Delay for a short time to allow Xryo.lua UI to initialize
-    wait(0.5) -- Adjust delay if necessary (0.5 seconds is usually enough)
-
-    -- Re-initialize settings after delay and check if values are set
     CFrameFly.Functions:ResetSettings()
     UpdateCharacterRefs()
 
-    -- If DownKeybind is still nil, set it to the default value
-    if not CFrameFly.Settings.DownKeybind then
-        print("DownKeybind was nil after delay, setting to default")
-        CFrameFly.Settings.DownKeybind = DownKeybind -- Use the default value
-    end
-
-    -- Now it's safer to print these values (they should be set)
-    print("CFrameFly.Settings.FlyKeybind:", CFrameFly.Settings.FlyKeybind)
-    print("CFrameFly.Settings.UpKeybind:", CFrameFly.Settings.UpKeybind)
-    print("CFrameFly.Settings.DownKeybind:", CFrameFly.Settings.DownKeybind)
-
     InputConnection = UserInputService.InputBegan:Connect(HandleInput)
     RenderStepConnection = RunService.RenderStepped:Connect(OnRenderStep)
-    print("RenderStepConnection:", RenderStepConnection)
 
     CharacterAddedConnection = LocalPlayer.CharacterAdded:Connect(function(newCharacter)
         StopFlying()
