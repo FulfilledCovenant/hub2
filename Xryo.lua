@@ -155,49 +155,47 @@ CFrameFlySection:AddToggle({
 	Value = CFrameFly.Settings.Enabled,
 	Callback = function(New, Old)
 		CFrameFly.Settings.Enabled = New
+		print("CFrameFly Enabled:", CFrameFly.Settings.Enabled)
 	end
 }).Default = CFrameFly.Settings.Enabled
 
 CFrameFlySection:AddSlider({
-    Name = "Speed",
-    Value = CFrameFly.Settings.Speed,
-    Callback = function(New, Old)
-        CFrameFly.Settings.Speed = New
-        print("CFrameFly Speed changed:", CFrameFly.Settings.Speed) -- Check speed updates
-    end,
-    Min = 0.1,
-    Max = 5,
-    Decimals = 1
+	Name = "Speed",
+	Value = CFrameFly.Settings.Speed,
+	Callback = function(New, Old)
+		CFrameFly.Settings.Speed = New
+	end,
+	Min = 0.1,
+	Max = 5,
+	Decimals = 1
 }).Default = CFrameFly.Settings.Speed
 
 CFrameFlySection:AddKeybind({
 	Name = "Fly Keybind",
-	Value = CFrameFly.Settings.FlyKeybind,
-	Callback = function(New, Old)
-		CFrameFly.Settings.FlyKeybind = string.match(tostring(New), "Enum%.[UserInputType]*[KeyCode]*%.(.+)")
+	Value = CFrameFly.Settings.FlyKeybind, -- Use the setting value here
+	Callback = function(Key)
+		CFrameFly.Settings.FlyKeybind = string.match(tostring(Key), "Enum%.[UserInputType]*[KeyCode]*%.(.+)")
+		print("Fly Keybind changed to:", CFrameFly.Settings.FlyKeybind)
 	end,
-	Save = true
 }).Default = CFrameFly.Settings.FlyKeybind
 
 CFrameFlySection:AddKeybind({
 	Name = "Up Keybind",
-	Value = CFrameFly.Settings.UpKeybind,
-	Callback = function(New, Old)
-		CFrameFly.Settings.UpKeybind = string.match(tostring(New), "Enum%.[UserInputType]*[KeyCode]*%.(.+)")
+	Value = CFrameFly.Settings.UpKeybind, -- Use the setting value here
+	Callback = function(Key)
+		CFrameFly.Settings.UpKeybind = string.match(tostring(Key), "Enum%.[UserInputType]*[KeyCode]*%.(.+)")
+		print("Up Keybind changed to:", CFrameFly.Settings.UpKeybind)
 	end,
-	Save = true
 }).Default = CFrameFly.Settings.UpKeybind
 
--- Remove the default value here, it's causing it to reset to nil
 CFrameFlySection:AddKeybind({
 	Name = "Down Keybind",
-	Value = CFrameFly.Settings.DownKeybind, 
-	Callback = function(New, Old)
-		CFrameFly.Settings.DownKeybind = string.match(tostring(New), "Enum%.[UserInputType]*[KeyCode]*%.(.+)")
-		print("Down Keybind changed:", CFrameFly.Settings.DownKeybind) -- Check if the value is updated
+	Value = CFrameFly.Settings.DownKeybind, -- Use the setting value here
+	Callback = function(Key)
+		CFrameFly.Settings.DownKeybind = string.match(tostring(Key), "Enum%.[UserInputType]*[KeyCode]*%.(.+)")
+		print("Down Keybind changed to:", CFrameFly.Settings.DownKeybind)
 	end,
-	Save = true
-})
+}).Default = CFrameFly.Settings.DownKeybind
 
 --// Functions Sections
 
