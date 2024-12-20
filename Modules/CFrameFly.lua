@@ -91,7 +91,6 @@ end
 
 local function HandleInput(input, gameProcessedEvent)
     if input.UserInputType == Enum.UserInputType.Keyboard then
-        -- Check if CFrameFly.Settings.FlyKeybind is valid before using it
         if CFrameFly.Settings.FlyKeybind and input.KeyCode == Enum.KeyCode[CFrameFly.Settings.FlyKeybind] and not gameProcessedEvent then
             print("Fly keybind pressed. Enabled:", CFrameFly.Settings.Enabled)
             if CFrameFly.Settings.Enabled then
@@ -108,19 +107,20 @@ end
 local function OnRenderStep()
     print("OnRenderStep running")
     print("IsFlying:", IsFlying, "Character:", Character, "Humanoid:", Humanoid, "HumanoidRootPart:", HumanoidRootPart)
-    if not IsFlying or not Character or not HumanoidRootPart then return end
+    if not IsFlying or not Character or not HumanoidRootPart then
+        print("OnRenderStep: Early return due to IsFlying, Character, or HumanoidRootPart being nil")
+        return
+    end
 
     local camera = workspace.CurrentCamera
     local moveVector = Vector3.new(0, 0, 0)
 
-    print("CFrameFly.Settings.UpKeybind:", CFrameFly.Settings.UpKeybind)
-    if UserInputService:IsKeyDown(Enum.KeyCode[CFrameFly.Settings.UpKeybind]) then
+    if CFrameFly.Settings.UpKeybind and UserInputService:IsKeyDown(Enum.KeyCode[CFrameFly.Settings.UpKeybind]) then
         print("Up key pressed")
         moveVector = moveVector + camera.CFrame.UpVector
     end
 
-    print("CFrameFly.Settings.DownKeybind:", CFrameFly.Settings.DownKeybind)
-    if UserInputService:IsKeyDown(Enum.KeyCode[CFrameFly.Settings.DownKeybind]) then
+    if CFrameFly.Settings.DownKeybind and UserInputService:IsKeyDown(Enum.KeyCode[CFrameFly.Settings.DownKeybind]) then
         print("Down key pressed")
         moveVector = moveVector - camera.CFrame.UpVector
     end
