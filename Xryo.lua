@@ -26,10 +26,6 @@ print("Loading CFrameFly...")
 loadstring(game:HttpGet("https://raw.githubusercontent.com/FulfilledCovenant/hub2/main/Modules/CFrameFly.lua"))()
 print("CFrameFly Loaded")
 
-print("Loading Teleport...")
-loadstring(game:HttpGet("https://raw.githubusercontent.com/FulfilledCovenant/hub2/main/Modules/ClickTeleport.lua"))()
-print("Teleport Loaded")
-
 --// Variables
 
 local Library = loadstring(game:GetObjects("rbxassetid://7657867786")[1].Source)() -- Pepsi's UI Library
@@ -152,10 +148,6 @@ local CFrameFlySection = MiscTab:CreateSection({
 	Name = "CFrame Fly"
 })
 
-local ClickTeleportSection = MiscTab:CreateSection({ -- Add Click Teleport section
-    Name = "Click Teleport"
-})
-
 --// CFrame Fly Settings
 
 CFrameFlySection:AddToggle({
@@ -204,37 +196,6 @@ CFrameFlySection:AddKeybind({
 		print("Down Keybind changed to:", CFrameFly.Settings.DownKeybind)
 	end,
 }).Default = CFrameFly.Settings.DownKeybind
-
---// Click Teleport Settings
-
-local ClickTeleport = getgenv().Xryo.ClickTeleport
-
-ClickTeleportSection:AddToggle({
-    Name = "Enabled",
-    Value = ClickTeleport.Settings.Enabled,
-    Callback = function(NewValue)
-        ClickTeleport.Settings.Enabled = NewValue
-        print("Click Teleport Enabled:", ClickTeleport.Settings.Enabled)
-    end
-}).Default = ClickTeleport.Settings.Enabled
-
-ClickTeleportSection:AddKeybind({
-    Name = "Teleport Keybind",
-    Value = ClickTeleport.Settings.TeleportKeybind,
-    Callback = function(Key)
-        ClickTeleport.Settings.TeleportKeybind = string.match(tostring(Key), "Enum%.[UserInputType]*[KeyCode]*%.(.+)")
-        print("Click Teleport Keybind changed to:", ClickTeleport.Settings.TeleportKeybind)
-    end
-}).Default = ClickTeleport.Settings.TeleportKeybind
-
-ClickTeleportSection:AddToggle({
-    Name = "Allow Teleport in Void",
-    Value = ClickTeleport.Settings.AllowTeleportInVoid,
-    Callback = function(NewValue)
-        ClickTeleport.Settings.AllowTeleportInVoid = NewValue
-        print("Click Teleport Allow Teleport in Void:", ClickTeleport.Settings.AllowTeleportInVoid)
-    end
-}).Default = ClickTeleport.Settings.AllowTeleportInVoid
 
 --// Functions Sections
 
