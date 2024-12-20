@@ -75,17 +75,18 @@ local function StopFlying()
 end
 
 local function HandleInput(input, gameProcessedEvent)
-	if input.UserInputType == Enum.UserInputType.Keyboard then
-		if input.KeyCode == Enum.KeyCode[CFrameFly.Settings.FlyKeybind] and not gameProcessedEvent then
-			if CFrameFly.Settings.Enabled then
-				if IsFlying then
-					StopFlying()
-				else
-					StartFlying()
-				end
-			end
-		end
-	end
+    if input.UserInputType == Enum.UserInputType.Keyboard then
+        -- Check if CFrameFly.Settings.FlyKeybind is valid before using it
+        if CFrameFly.Settings.FlyKeybind and input.KeyCode == Enum.KeyCode[CFrameFly.Settings.FlyKeybind] and not gameProcessedEvent then
+            if CFrameFly.Settings.Enabled then
+                if IsFlying then
+                    StopFlying()
+                else
+                    StartFlying()
+                end
+            end
+        end
+    end
 end
 
 local function OnRenderStep()
@@ -124,7 +125,7 @@ local RenderStepConnection
 local CharacterAddedConnection
 
 local function Load()
-    CFrameFly.Functions:ResetSettings() -- Add this line to initialize settings
+    CFrameFly.Functions:ResetSettings() -- Initialize settings
     UpdateCharacterRefs()
 
     InputConnection = UserInputService.InputBegan:Connect(HandleInput)
