@@ -155,6 +155,7 @@ CFrameFlySection:AddToggle({
 	Value = CFrameFly.Settings.Enabled,
 	Callback = function(New, Old)
 		CFrameFly.Settings.Enabled = New
+		print("CFrameFly Enabled:", CFrameFly.Settings.Enabled)
 	end
 }).Default = CFrameFly.Settings.Enabled
 
@@ -175,6 +176,7 @@ CFrameFlySection:AddKeybind({
 	Callback = function(New, Old)
 		CFrameFly.Settings.FlyKeybind = string.match(tostring(New), "Enum%.[UserInputType]*[KeyCode]*%.(.+)")
 	end,
+	Save = true
 }).Default = CFrameFly.Settings.FlyKeybind
 
 CFrameFlySection:AddKeybind({
@@ -183,15 +185,19 @@ CFrameFlySection:AddKeybind({
 	Callback = function(New, Old)
 		CFrameFly.Settings.UpKeybind = string.match(tostring(New), "Enum%.[UserInputType]*[KeyCode]*%.(.+)")
 	end,
+	Save = true
 }).Default = CFrameFly.Settings.UpKeybind
 
+-- Remove the default value here, it's causing it to reset to nil
 CFrameFlySection:AddKeybind({
 	Name = "Down Keybind",
-	Value = CFrameFly.Settings.DownKeybind,
+	Value = CFrameFly.Settings.DownKeybind, 
 	Callback = function(New, Old)
 		CFrameFly.Settings.DownKeybind = string.match(tostring(New), "Enum%.[UserInputType]*[KeyCode]*%.(.+)")
+		print("Down Keybind changed:", CFrameFly.Settings.DownKeybind) -- Check if the value is updated
 	end,
-}).Default = CFrameFly.Settings.DownKeybind
+	Save = true
+})
 
 --// Functions Sections
 
