@@ -6,7 +6,7 @@ local getgenv, UserInputService, RunService = getgenv, game:GetService("UserInpu
 
 --// Launching checks
 
-if not getgenv().6Xryo or getgenv().6Xryo.CFrameFly then return end
+if not getgenv().Xryo or getgenv().Xryo.CFrameFly then return end
 
 --// Variables
 
@@ -23,7 +23,7 @@ local DownKeybind = "Space" -- Default to Space
 
 --// Environment
 
-getgenv().6Xryo.CFrameFly = {
+getgenv().Xryo.CFrameFly = {
 	Settings = {
 		Enabled = false,
 		Speed = FlySpeed,
@@ -34,7 +34,7 @@ getgenv().6Xryo.CFrameFly = {
 	Functions = {}
 }
 
-local CFrameFly = getgenv().6Xryo.CFrameFly
+local CFrameFly = getgenv().Xryo.CFrameFly
 
 --// Core Functions
 
@@ -144,8 +144,8 @@ function CFrameFly.Functions:Exit()
 
 	StopFlying()
 
-	getgenv().6Xryo.CFrameFly.Functions = nil
-	getgenv().6Xryo.CFrameFly = nil
+	getgenv().Xryo.CFrameFly.Functions = nil
+	getgenv().Xryo.CFrameFly = nil
 end
 
 function CFrameFly.Functions:Restart()
