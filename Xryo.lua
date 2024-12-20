@@ -155,7 +155,6 @@ CFrameFlySection:AddToggle({
 	Value = CFrameFly.Settings.Enabled,
 	Callback = function(New, Old)
 		CFrameFly.Settings.Enabled = New
-		print("CFrameFly Enabled:", CFrameFly.Settings.Enabled)
 	end
 }).Default = CFrameFly.Settings.Enabled
 
