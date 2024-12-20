@@ -30,6 +30,10 @@ print("Loading ClickTP...")
 loadstring(game:HttpGet("https://raw.githubusercontent.com/FulfilledCovenant/hub2/main/Modules/ClickTP.lua"))()
 print("ClickTP Loaded")
 
+print("Loading Noclip...")
+loadstring(game:HttpGet("https://raw.githubusercontent.com/FulfilledCovenant/hub2/main/Modules/Noclip.lua"))()
+print("Noclip Loaded")
+
 --// Variables
 
 local Library = loadstring(game:GetObjects("rbxassetid://7657867786")[1].Source)() -- Pepsi's UI Library
@@ -156,6 +160,10 @@ local ClickTPSection = MiscTab:CreateSection({ -- Add new section
 	Name = "Click TP"
 })
 
+local NoclipSection = MiscTab:CreateSection({ -- Add new section for Noclip
+	Name = "Noclip"
+})
+
 --// CFrame Fly Settings
 
 CFrameFlySection:AddToggle({
@@ -234,6 +242,53 @@ ClickTPSection:AddKeybind({
 		print("Click TP Keybind changed to:", getgenv().Xryo.ClickTP.Settings.TriggerKey)
 	end,
 }).Default = getgenv().Xryo.ClickTP.Settings.TriggerKey
+
+--// Noclip Settings
+
+NoclipSection:AddDropdown({
+	Name = "Type",
+	Value = getgenv().Xryo.Noclip.Settings.NoclipType,
+	Callback = function(New)
+		getgenv().Xryo.Noclip.Settings.NoclipType = New
+		if getgenv().Xryo.Noclip.Settings.Enabled then
+			if New == "Normal" then
+				getgenv().Xryo.Noclip.Functions:EnableNormalNoclip()
+			elseif New == "Bypass" then
+				getgenv().Xryo.Noclip.Functions:EnableBypassNoclip()
+			end
+		end
+	end,
+	List = {"Normal", "Bypass"},
+	Nothing = "Normal"
+}).Default = getgenv().Xryo.Noclip.Settings.NoclipType
+
+NoclipSection:AddToggle({
+	Name = "Enabled",
+	Value = getgenv().Xryo.Noclip.Settings.Enabled,
+	Callback = function(New)
+		getgenv().Xryo.Noclip.Settings.Enabled = New
+		if not New then
+			getgenv().Xryo.Noclip.Functions:DisableNoclip()
+		end
+	end
+})
+
+NoclipSection:AddToggle({
+	Name = "Toggle",
+	Value = getgenv().Xryo.Noclip.Settings.Toggle,
+	Callback = function(New)
+		getgenv().Xryo.Noclip.Settings.Toggle = New
+	end
+}).Default = getgenv().Xryo.Noclip.Settings.Toggle
+
+NoclipSection:AddKeybind({
+	Name = "Hotkey",
+	Value = getgenv().Xryo.Noclip.Settings.TriggerKey,
+	Callback = function(Key)
+		getgenv().Xryo.Noclip.Settings.TriggerKey = string.match(tostring(Key), "Enum%.[UserInputType]*[KeyCode]*%.(.+)")
+		print("Noclip Keybind changed to:", getgenv().Xryo.Noclip.Settings.TriggerKey)
+	end,
+}).Default = getgenv().Xryo.Noclip.Settings.TriggerKey
 
 --// Functions Sections
 
