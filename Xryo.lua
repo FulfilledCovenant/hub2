@@ -148,6 +148,10 @@ local CFrameFlySection = MiscTab:CreateSection({
 	Name = "CFrame Fly"
 })
 
+local ClickTPSection = MiscTab:CreateSection({ -- Add new section
+	Name = "Click TP"
+})
+
 --// CFrame Fly Settings
 
 CFrameFlySection:AddToggle({
@@ -196,6 +200,19 @@ CFrameFlySection:AddKeybind({
 		print("Down Keybind changed to:", CFrameFly.Settings.DownKeybind)
 	end,
 }).Default = CFrameFly.Settings.DownKeybind
+
+--// Click TP Settings
+
+ClickTPSection:AddToggle({
+	Name = "Enabled",
+	Value = false, -- Default to off
+	Callback = function(New)
+		getgenv().Xryo.ClickTP.Settings.Enabled = New -- Update the setting
+		if not New then
+			getgenv().Xryo.ClickTP.Functions:Stop() -- Stop Click TP if disabled
+		end
+	end
+})
 
 --// Functions Sections
 
