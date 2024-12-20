@@ -113,6 +113,7 @@ local function OnRenderStep()
     end
 
     local camera = workspace.CurrentCamera
+    print("Camera CFrame:", camera.CFrame) -- Add this line
     local moveVector = Vector3.new(0, 0, 0)
 
     if CFrameFly.Settings.UpKeybind and UserInputService:IsKeyDown(Enum.KeyCode[CFrameFly.Settings.UpKeybind]) then
@@ -144,6 +145,7 @@ local function OnRenderStep()
 
     moveVector = moveVector.Unit * CFrameFly.Settings.Speed
     print("moveVector:", moveVector)
+    print("moveVector components:", moveVector.X, moveVector.Y, moveVector.Z) -- Add this line
     HumanoidRootPart.CFrame = HumanoidRootPart.CFrame + moveVector
 end
 
@@ -160,6 +162,7 @@ local function Load()
     print("CFrameFly.Settings.FlyKeybind:", CFrameFly.Settings.FlyKeybind)
     print("CFrameFly.Settings.UpKeybind:", CFrameFly.Settings.UpKeybind)
     print("CFrameFly.Settings.DownKeybind:", CFrameFly.Settings.DownKeybind)
+    print("CFrameFly.Settings.Speed:", CFrameFly.Settings.Speed) -- Check initial speed
 
     InputConnection = UserInputService.InputBegan:Connect(HandleInput)
     RenderStepConnection = RunService.RenderStepped:Connect(OnRenderStep)
