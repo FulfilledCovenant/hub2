@@ -160,14 +160,15 @@ CFrameFlySection:AddToggle({
 }).Default = CFrameFly.Settings.Enabled
 
 CFrameFlySection:AddSlider({
-	Name = "Speed",
-	Value = CFrameFly.Settings.Speed,
-	Callback = function(New, Old)
-		CFrameFly.Settings.Speed = New
-	end,
-	Min = 0.1,
-	Max = 5,
-	Decimals = 1
+    Name = "Speed",
+    Value = CFrameFly.Settings.Speed,
+    Callback = function(New, Old)
+        CFrameFly.Settings.Speed = New
+        print("CFrameFly Speed changed:", CFrameFly.Settings.Speed) -- Check speed updates
+    end,
+    Min = 0.1,
+    Max = 5,
+    Decimals = 1
 }).Default = CFrameFly.Settings.Speed
 
 CFrameFlySection:AddKeybind({
