@@ -209,14 +209,31 @@ CFrameFlySection:AddKeybind({
 
 ClickTPSection:AddToggle({
 	Name = "Enabled",
-	Value = false, -- Default to off
+	Value = getgenv().Xryo.ClickTP.Settings.Enabled,
 	Callback = function(New)
-		getgenv().Xryo.ClickTP.Settings.Enabled = New -- Update the setting
+		getgenv().Xryo.ClickTP.Settings.Enabled = New
 		if not New then
-			getgenv().Xryo.ClickTP.Functions:Stop() -- Stop Click TP if disabled
+			getgenv().Xryo.ClickTP.Functions:Stop()
 		end
 	end
 })
+
+ClickTPSection:AddToggle({
+	Name = "Toggle",
+	Value = getgenv().Xryo.ClickTP.Settings.Toggle,
+	Callback = function(New)
+		getgenv().Xryo.ClickTP.Settings.Toggle = New
+	end
+}).Default = getgenv().Xryo.ClickTP.Settings.Toggle
+
+ClickTPSection:AddKeybind({
+	Name = "Hotkey",
+	Value = getgenv().Xryo.ClickTP.Settings.TriggerKey,
+	Callback = function(Key)
+		getgenv().Xryo.ClickTP.Settings.TriggerKey = string.match(tostring(Key), "Enum%.[UserInputType]*[KeyCode]*%.(.+)")
+		print("Click TP Keybind changed to:", getgenv().Xryo.ClickTP.Settings.TriggerKey)
+	end,
+}).Default = getgenv().Xryo.ClickTP.Settings.TriggerKey
 
 --// Functions Sections
 
