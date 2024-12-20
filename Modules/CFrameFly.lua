@@ -124,15 +124,16 @@ local RenderStepConnection
 local CharacterAddedConnection
 
 local function Load()
-	UpdateCharacterRefs()
+    CFrameFly.Functions:ResetSettings() -- Add this line to initialize settings
+    UpdateCharacterRefs()
 
-	InputConnection = UserInputService.InputBegan:Connect(HandleInput)
-	RenderStepConnection = RunService.RenderStepped:Connect(OnRenderStep)
+    InputConnection = UserInputService.InputBegan:Connect(HandleInput)
+    RenderStepConnection = RunService.RenderStepped:Connect(OnRenderStep)
 
-	CharacterAddedConnection = LocalPlayer.CharacterAdded:Connect(function(newCharacter)
-		StopFlying()
-		UpdateCharacterRefs()
-	end)
+    CharacterAddedConnection = LocalPlayer.CharacterAdded:Connect(function(newCharacter)
+        StopFlying()
+        UpdateCharacterRefs()
+    end)
 end
 
 --// Functions
