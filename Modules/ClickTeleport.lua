@@ -16,6 +16,7 @@ local Camera = workspace.CurrentCamera
 
 local Enabled = false
 local TeleportKeybind = "LeftControl" -- Default keybind
+local AllowTeleportInVoid = false -- Setting to allow teleporting even if Mouse.Target is nil
 
 --// Environment
 
@@ -23,6 +24,7 @@ getgenv().Xryo.ClickTeleport = {
     Settings = {
         Enabled = false,
         TeleportKeybind = TeleportKeybind,
+        AllowTeleportInVoid = false,
     },
     Functions = {}
 }
@@ -31,46 +33,25 @@ local ClickTeleport = getgenv().Xryo.ClickTeleport
 
 --// Core Functions
 
-local function Teleport(Position)
-    print("Teleport called with Position:", Position)
+local function Teleport(MouseHit)
     if not LocalPlayer or not LocalPlayer.Character then return end
 
     local Character = LocalPlayer.Character
     local HumanoidRootPart = Character:FindFirstChild("HumanoidRootPart")
 
     if HumanoidRootPart then
-        print("HumanoidRootPart found:", HumanoidRootPart)
-        -- Method 1: CFrame with Offset (Less likely to be detected)
-        local Offset = Vector3.new(0, 3, 0) -- Teleport slightly above the target position
-        print("Teleporting to CFrame:", CFrame.new(Position + Offset))
-        HumanoidRootPart.CFrame = CFrame.new(Position + Offset)
-
-        -- Method 2: CFraming Body Parts Individually (More complex, potentially less detectable)
-        -- for _, Part in pairs(Character:GetChildren()) do
-        --     if Part:IsA("BasePart") and Part ~= HumanoidRootPart then
-        --         Part.CFrame = CFrame.new(Position + Offset + (Part.Position - HumanoidRootPart.Position))
-        --     end
-        -- end
-    else
-        print("HumanoidRootPart not found!")
+        -- Use the provided teleport method (directly setting CFrame)
+        HumanoidRootPart.CFrame = MouseHit
     end
 end
 
 local function OnUpdate()
     if not Enabled then return end
 
-    print("Click Teleport Enabled:", ClickTeleport.Settings.Enabled)
-    print("Teleport Keybind:", ClickTeleport.Settings.TeleportKeybind)
-
     if UserInputService:IsKeyDown(Enum.KeyCode[ClickTeleport.Settings.TeleportKeybind]) then
-        print("Teleport key pressed")
-        if Mouse.Target and Mouse.Target ~= workspace.Terrain then
-            local MouseHit = Mouse.Hit
-            local pos = MouseHit.p
-            print("Mouse Target:", Mouse.Target)
-            print("Mouse Hit:", MouseHit)
-            print("Teleporting to:", pos)
-            Teleport(pos)
+        local MouseHit = Mouse.Hit
+        if Mouse.Target or ClickTeleport.Settings.AllowTeleportInVoid then
+            Teleport(MouseHit)
         end
     end
 end
@@ -80,8 +61,8 @@ end
 local UpdateConnection
 
 local function Load()
+    ClickTeleport.Functions:ResetSettings()
     UpdateConnection = RunService.Stepped:Connect(OnUpdate)
-    print("UpdateConnection:", UpdateConnection)
 end
 
 --// Functions
@@ -101,6 +82,7 @@ end
 function ClickTeleport.Functions:ResetSettings()
     ClickTeleport.Settings.Enabled = false
     ClickTeleport.Settings.TeleportKeybind = TeleportKeybind
+    ClickTeleport.Settings.AllowTeleportInVoid = false
 end
 
 --// Load
