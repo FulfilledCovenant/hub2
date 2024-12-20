@@ -44,27 +44,19 @@ local function UpdateCharacterRefs()
     end
 end
 
-local function SetNoclip(enabled, noclipType)
+local function SetNoclip(enabled)
 	if Character then
-		local collisionGroupName = enabled and (noclipType == "Bypass" and "NoCollision" or "Default") or "Default"
-
 		for _, part in pairs(Character:GetDescendants()) do
 			if part:IsA("BasePart") then
-				part.CanCollide = not enabled
-				if noclipType == "Bypass" then
-					if enabled then
-						part:SetNetworkOwner(LocalPlayer) -- Attempt to take network ownership for bypassing
+				if enabled then
+					part.CanCollide = false
+					if NoclipType == "Bypass" then
+						part:SetNetworkOwner(LocalPlayer) -- Set network owner to client
 					end
-					-- Check for existing collision group using GetCollisionGroupId instead of GetCanCollideWithPart
-					if part.CollisionGroupId == 0 then -- 0 is the default collision group ID
-						local success, collisionGroupId = pcall(function()
-							return game:GetService("PhysicsService"):GetCollisionGroupId(collisionGroupName)
-						end)
-						if success and collisionGroupId then
-							part.CollisionGroupId = collisionGroupId
-						else
-							warn("Failed to get or create collision group ID for:", collisionGroupName)
-						end
+				else
+					part.CanCollide = true
+					if NoclipType == "Bypass" then
+						part:SetNetworkOwner(nil) -- Reset network owner
 					end
 				end
 			end
@@ -124,10 +116,7 @@ local function OnInputEnded(input, gameProcessedEvent)
 end
 
 local function OnRenderStep()
-	if IsNoclipEnabled and Noclip.Settings.NoclipType == "Bypass" then
-		-- Continuously reapply bypass properties in case something tries to reset them
-		SetNoclip(true, "Bypass")
-	end
+	-- No longer needed for bypass mode
 end
 
 --// Connections
@@ -148,47 +137,22 @@ local function Load()
 		Noclip.Functions:DisableNoclip()
 		UpdateCharacterRefs()
 	end)
-
-	-- Create a new collision group for bypass noclip if it doesn't exist
-	local collisionGroupName = "NoCollision"
-	local collisionGroupExists = false
-
-	-- Use GetCollisionGroupNames to check for existing collision group names
-	local collisionGroupNames = game:GetService("PhysicsService"):GetCollisionGroupNames()
-	for _, name in pairs(collisionGroupNames) do
-		if name == collisionGroupName then
-			collisionGroupExists = true
-			break
-		end
-	end
-
-	if not collisionGroupExists then
-		local success, err = pcall(function()
-			game:GetService("PhysicsService"):RegisterCollisionGroup(collisionGroupName)
-		end)
-		if not success then
-			warn("Failed to register collision group:", collisionGroupName, "Error:", err)
-		else
-			-- Only set collidability if registration is successful
-			game:GetService("PhysicsService"):CollisionGroupSetCollidable(collisionGroupName, "Default", false)
-		end
-	else
-		-- Assume collision group is already set up correctly if it exists
-	end
 end
 
 --// Functions
 
 function Noclip.Functions:EnableNormalNoclip()
-	SetNoclip(true, "Normal")
+	NoclipType = "Normal"
+	SetNoclip(true)
 end
 
 function Noclip.Functions:EnableBypassNoclip()
-	SetNoclip(true, "Bypass")
+	NoclipType = "Bypass"
+	SetNoclip(true)
 end
 
 function Noclip.Functions:DisableNoclip()
-	SetNoclip(false, Noclip.Settings.NoclipType) -- Use the currently selected type when disabling
+	SetNoclip(false)
 end
 
 function Noclip.Functions:Exit()
