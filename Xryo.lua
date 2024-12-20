@@ -227,6 +227,15 @@ ClickTeleportSection:AddKeybind({
     end
 }).Default = ClickTeleport.Settings.TeleportKeybind
 
+ClickTeleportSection:AddToggle({
+    Name = "Allow Teleport in Void",
+    Value = ClickTeleport.Settings.AllowTeleportInVoid,
+    Callback = function(NewValue)
+        ClickTeleport.Settings.AllowTeleportInVoid = NewValue
+        print("Click Teleport Allow Teleport in Void:", ClickTeleport.Settings.AllowTeleportInVoid)
+    end
+}).Default = ClickTeleport.Settings.AllowTeleportInVoid
+
 --// Functions Sections
 
 local FunctionsSection = FunctionsTab:CreateSection({
