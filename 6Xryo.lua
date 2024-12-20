@@ -15,7 +15,7 @@ getgenv().6Xryo = {}
 --// Load Modules
 
 loadstring(game:HttpGet("https://raw.githubusercontent.com/FulfilledCovenant/hub2/main/Modules/Aimbot.lua"))()
-loadstring(game:HttpGet("https://raw.githubusercontent.com/FulfilledCovenant/hub2/main/Modules/Wall%20Hack.lua"))()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/FulfilledCovenant/hub2/main/Modules/WallHack.lua"))()
 loadstring(game:HttpGet("https://raw.githubusercontent.com/FulfilledCovenant/hub2/main/Modules/CFrameFly.lua"))() -- Add this line
 
 --// Variables
