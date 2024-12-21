@@ -48,59 +48,42 @@ local function SetNoclip(enabled)
 	if Character then
 		for _, part in pairs(Character:GetDescendants()) do
 			if part:IsA("BasePart") then
-				if enabled then
-					part.CanCollide = false
-					if NoclipType == "Bypass" then
-						part:SetNetworkOwner(LocalPlayer) -- Set network owner to client
-					end
-				else
-					part.CanCollide = true
-					if NoclipType == "Bypass" then
-						part:SetNetworkOwner(nil) -- Reset network owner
-					end
-				end
+				part.CanCollide = not enabled
 			end
 		end
 
 		if Humanoid then
 			Humanoid:SetStateEnabled(Enum.HumanoidStateType.FallingDown, not enabled)
 			Humanoid:SetStateEnabled(Enum.HumanoidStateType.PlatformStanding, not enabled)
+			Humanoid:SetStateEnabled(Enum.HumanoidStateType.Swimming, not enabled)
 		end
 	end
 end
 
 local function OnInputBegan(input, gameProcessedEvent)
-    if input.UserInputType == Enum.UserInputType.Keyboard then
-        if Noclip.Settings.TriggerKey and input.KeyCode == Enum.KeyCode[Noclip.Settings.TriggerKey] and not gameProcessedEvent then
-            if Noclip.Settings.Toggle then
-                Running = not Running
-                IsNoclipEnabled = Running
-                if IsNoclipEnabled then
-                    if Noclip.Settings.NoclipType == "Normal" then
-                        Noclip.Functions:EnableNormalNoclip()
-                    elseif Noclip.Settings.NoclipType == "Bypass" then
-                        Noclip.Functions:EnableBypassNoclip()
-                    end
-                else
-                    Noclip.Functions:DisableNoclip()
-                end
-                print("Noclip Running:", Running)
-            else
-                IsNoclipEnabled = true
-                if Noclip.Settings.NoclipType == "Normal" then
-                    Noclip.Functions:EnableNormalNoclip()
-                elseif Noclip.Settings.NoclipType == "Bypass" then
-                    Noclip.Functions:EnableBypassNoclip()
-                end
-                print("Noclip Running:", IsNoclipEnabled)
-            end
-        end
-    elseif input.UserInputType == Enum.UserInputType.MouseButton1 and not gameProcessedEvent then
-        if not Noclip.Settings.Toggle and IsNoclipEnabled then
-            Noclip.Functions:DisableNoclip()
-            IsNoclipEnabled = false
-        end
-    end
+	if input.UserInputType == Enum.UserInputType.Keyboard then
+		if Noclip.Settings.TriggerKey and input.KeyCode == Enum.KeyCode[Noclip.Settings.TriggerKey] and not gameProcessedEvent then
+			if Noclip.Settings.Toggle then
+				Running = not Running
+				IsNoclipEnabled = Running
+				if IsNoclipEnabled then
+					Noclip.Functions:EnableNoclip()
+				else
+					Noclip.Functions:DisableNoclip()
+				end
+				print("Noclip Running:", Running)
+			else
+				IsNoclipEnabled = true
+				Noclip.Functions:EnableNoclip()
+				print("Noclip Running:", IsNoclipEnabled)
+			end
+		end
+	elseif input.UserInputType == Enum.UserInputType.MouseButton1 and not gameProcessedEvent then
+		if not Noclip.Settings.Toggle and IsNoclipEnabled then
+			Noclip.Functions:DisableNoclip()
+			IsNoclipEnabled = false
+		end
+	end
 end
 
 local function OnInputEnded(input, gameProcessedEvent)
@@ -116,7 +99,12 @@ local function OnInputEnded(input, gameProcessedEvent)
 end
 
 local function OnRenderStep()
-	-- No longer needed for bypass mode
+	if IsNoclipEnabled then
+		if HumanoidRootPart then
+			-- Keep the HumanoidRootPart's velocity in the direction the player is moving
+			HumanoidRootPart.Velocity = (Humanoid.MoveDirection * 50) + Vector3.new(0, HumanoidRootPart.Velocity.Y, 0) -- Adjust the multiplier (50) as needed
+		end
+	end
 end
 
 --// Connections
@@ -141,17 +129,13 @@ end
 
 --// Functions
 
-function Noclip.Functions:EnableNormalNoclip()
-	NoclipType = "Normal"
-	SetNoclip(true)
-end
-
-function Noclip.Functions:EnableBypassNoclip()
-	NoclipType = "Bypass"
+function Noclip.Functions:EnableNoclip()
+	IsNoclipEnabled = true
 	SetNoclip(true)
 end
 
 function Noclip.Functions:DisableNoclip()
+	IsNoclipEnabled = false
 	SetNoclip(false)
 end
 
@@ -182,7 +166,6 @@ function Noclip.Functions:ResetSettings()
 	Noclip.Settings.Enabled = false
 	Noclip.Settings.Toggle = false
 	Noclip.Settings.TriggerKey = TriggerKey
-	Noclip.Settings.NoclipType = NoclipType
 	Noclip.Functions:Stop()
 end
 
