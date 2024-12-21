@@ -26,6 +26,10 @@ print("Loading CFrameFly...")
 loadstring(game:HttpGet("https://raw.githubusercontent.com/FulfilledCovenant/hub2/main/Modules/CFrameFly.lua"))()
 print("CFrameFly Loaded")
 
+print("Loading Fly...")
+loadstring(game:HttpGet("https://raw.githubusercontent.com/FulfilledCovenant/hub2/main/Modules/Fly.lua"))()
+print("Fly Loaded")
+
 print("Loading ClickTP...")
 loadstring(game:HttpGet("https://raw.githubusercontent.com/FulfilledCovenant/hub2/main/Modules/ClickTP.lua"))()
 print("ClickTP Loaded")
