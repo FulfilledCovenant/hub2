@@ -156,6 +156,10 @@ local CFrameFlySection = MiscTab:CreateSection({
 	Name = "CFrame Fly"
 })
 
+local FlySection = MiscTab:CreateSection({ -- Add new section for Fly
+	Name = "Fly"
+})
+
 local ClickTPSection = MiscTab:CreateSection({ -- Add new section
 	Name = "Click TP"
 })
@@ -212,6 +216,41 @@ CFrameFlySection:AddKeybind({
 		print("Down Keybind changed to:", CFrameFly.Settings.DownKeybind)
 	end,
 }).Default = CFrameFly.Settings.DownKeybind
+
+--// Fly Settings (Add this section after CFrame Fly Settings)
+
+FlySection:AddToggle({
+	Name = "Enabled",
+	Value = getgenv().Xryo.Fly.Settings.Enabled,
+	Callback = function(New)
+		getgenv().Xryo.Fly.Settings.Enabled = New
+		if New then
+			getgenv().Xryo.Fly.Functions:Fly()
+		else
+			getgenv().Xryo.Fly.Functions:Stop()
+		end
+	end
+})
+
+FlySection:AddSlider({
+	Name = "Speed",
+	Value = getgenv().Xryo.Fly.Settings.FlySpeed,
+	Callback = function(New)
+		getgenv().Xryo.Fly.Settings.FlySpeed = New
+	end,
+	Min = 1,
+	Max = 100,
+	Decimals = 0
+}).Default = getgenv().Xryo.Fly.Settings.FlySpeed
+
+FlySection:AddKeybind({
+	Name = "Hotkey",
+	Value = getgenv().Xryo.Fly.Settings.TriggerKey,
+	Callback = function(Key)
+		getgenv().Xryo.Fly.Settings.TriggerKey = string.match(tostring(Key), "Enum%.[UserInputType]*[KeyCode]*%.(.+)")
+		print("Fly Keybind changed to:", getgenv().Xryo.Fly.Settings.TriggerKey)
+	end,
+}).Default = getgenv().Xryo.Fly.Settings.TriggerKey
 
 --// Click TP Settings
 
