@@ -27,7 +27,7 @@ getgenv().Xryo.Fly = {
 	Settings = {
 		Enabled = false,
 		TriggerKey = TriggerKey,
-		FlySpeed = FlySpeed
+		FlySpeed = 50 -- Assign default value directly here
 	},
 	Functions = {}
 }
@@ -45,7 +45,7 @@ local function UpdateCharacterRefs()
 end
 
 local function OnInputBegan(input, gameProcessedEvent)
-	if input.UserInputType == Enum.UserInputType.Keyboard and input.KeyCode then -- Check if KeyCode exists
+	if input.UserInputType == Enum.UserInputType.Keyboard and input.KeyCode then
 		if Fly.Settings.TriggerKey and input.KeyCode == Enum.KeyCode[Fly.Settings.TriggerKey] and not gameProcessedEvent then
 			Running = not Running
 			IsFlyEnabled = Running
