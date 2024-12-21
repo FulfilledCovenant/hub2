@@ -46,7 +46,8 @@ end
 local function TeleportTo(position)
     if Character and HumanoidRootPart then
         -- Teleport the character
-        HumanoidRootPart.CFrame = CFrame.new(position)
+		local currentCFrame = HumanoidRootPart.CFrame
+        HumanoidRootPart.CFrame = currentCFrame * CFrame.new(position - currentCFrame.Position)
     end
 end
 
