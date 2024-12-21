@@ -245,29 +245,16 @@ ClickTPSection:AddKeybind({
 
 --// Noclip Settings
 
-NoclipSection:AddDropdown({
-	Name = "Type",
-	Value = getgenv().Xryo.Noclip.Settings.NoclipType,
-	Callback = function(New)
-		getgenv().Xryo.Noclip.Settings.NoclipType = New
-		if getgenv().Xryo.Noclip.Settings.Enabled then
-			if New == "Normal" then
-				getgenv().Xryo.Noclip.Functions:EnableNormalNoclip()
-			elseif New == "Bypass" then
-				getgenv().Xryo.Noclip.Functions:EnableBypassNoclip()
-			end
-		end
-	end,
-	List = {"Normal", "Bypass"},
-	Nothing = "Normal"
-}).Default = getgenv().Xryo.Noclip.Settings.NoclipType
+
 
 NoclipSection:AddToggle({
 	Name = "Enabled",
 	Value = getgenv().Xryo.Noclip.Settings.Enabled,
 	Callback = function(New)
 		getgenv().Xryo.Noclip.Settings.Enabled = New
-		if not New then
+		if New then
+			getgenv().Xryo.Noclip.Functions:EnableNoclip()
+		else
 			getgenv().Xryo.Noclip.Functions:DisableNoclip()
 		end
 	end
